@@ -13,13 +13,13 @@ function lucasSequence(n) {
   }
 
   return result;
+
+  // Listen for messages from the main thread
+  onmessage = function (event) {
+    const index = event.data.index;
+    const result = lucasSequence(index);
+
+    // Send the result back to the main thread
+    postMessage({ index, result });
+  };
 }
-
-// Listen for messages from the main thread
-onmessage = function (event) {
-  const index = event.data.index;
-  const result = lucasSequence(index);
-
-  // Send the result back to the main thread
-  postMessage({ index, result });
-};
