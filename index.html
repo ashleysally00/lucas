@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lucas Sequence Web Worker</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <link />
+  </head>
+  <body>
+    <section id="box">
+      <input type="number" id="indexInput" placeholder="Enter index" />
+      <button id="calculateButton">Calculate Lucas Sequence</button>
+
+      <div id="result-container"></div>
+    </section>
+
+    <script>
+      //Create a web new worker to handle the lucas calculations in generate.js
+
+      const lucasWorker = new Worker("generate.js");
+
+      //Button click, event listener
+
+      document
+        .getElementById("calculateButton")
+        .addEventListener("click", function () {
+          //get the user's input for the index they want to use for worker's calculation
+
+          const indexToCalculate = document.getElementById("indexInput").value;
+          lucasWorker.postMessage({ index: parseInt(indexToCalculate) });
+        });
+
+      //listen for the worker's message
+      lucasWorker.onmessage = function (event) {
+        //display results on UI so user can see it
+
+        const resultContainer = document.getElementById("result-container");
+        resultContainer.innerHTML = `Lucas sequence at index ${event.data.index}: ${event.data.result}`;
+
+        // console.log(
+        //   `Lucas sequence at index ${event.data.index}: ${event.data.result}`
+        // );
+      };
+    </script>
+  </body>
+</html>
